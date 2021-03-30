@@ -1,0 +1,9 @@
+[Unit]
+Description=Run mindex container 15 minutes after systemd start and every 12 hours after
+
+[Timer]
+OnStartupSec=15min
+OnUnitActiveSec=12h
+
+[Install]
+WantedBy=timers.target
