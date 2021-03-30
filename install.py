@@ -2,7 +2,7 @@ import yaml, os, shutil, sys, subprocess
 
 def get_choice():    
     while True:
-        choice = input("Choose Installation:\n   1 Native installation\n    2 Installation as container")
+        choice = input("Choose Installation:\n   1 Native installation\n   2 Installation as container ")
         if choice == "1":
             print("Installing natively...")
             return 1
@@ -59,12 +59,14 @@ def main():
         log_path = os.path.join(db_dir, "status.log")
         data = { "db_path": db_path, "log_path": log_path, "entrypoint": entrypoint }
     else:
+        #when it is run as a container, db_path and log_path aren't needed for the indexer itself
         db_path = "/var/lib/docker/volumes/files-db/_data/files.db"
         log_path = "/var/lib/docker/volumes/files-db/_data/status.log"
         entrypoint = "/host" + entrypoint
         prefix = "/host"
         installation = "container"
-        print("Run 'docker build -t [name] .' to build the image")
+        print("Run 'docker build -t [name] .' in the source directory to build the image.")
+        print('docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target="/host",readonly [name]')
 
     data = dict()
     data["installation"] = installation
