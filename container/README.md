@@ -35,6 +35,8 @@ Meant for being used as a docker container:
   
   * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly [tag]`
 
+Run `docker inspect files-db` for the database and log location on the container.
+
 To use outside a container: 
 
 * change the LOG_FILENAME value to a path of your choice (~ line 13)
