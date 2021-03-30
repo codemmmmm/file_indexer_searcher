@@ -1,15 +1,39 @@
+#!/usr/bin/env python3
 """Scans and saves all directory entries in a linux filesystem into a SQLite DB, 
 except "/proc", "/var", "/run", "/sys", "/dev" and "/boot".
 Meant to be used as a docker container.
 Logs the progress at "/etc/files-index/status.log" (in container).
 """
 
-import os, stat, sqlite3, datetime, hashlib, time, logging, collections
+import os, stat, sqlite3, datetime, hashlib, time, logging, collections, yaml, argparse
 
 from logging.handlers import RotatingFileHandler
 
+parser = argparse.ArgumentParser(description='Scan and save all directory entries into a SQLite DB')
+parser.add_argument('--container', help='this argument is passed when it is run as container', action='store_true')
+args = parser.parse_args()
+
+def get_path(key):
+    if args.container:
+        conf = "/host" + "/var/lib/file_index_search/config.yaml"
+    else:
+        conf = "/var/lib/file_index_search/config.yaml"
+    with open("/var/lib/file_index_search/config.yaml") as config:
+        try:
+            dictionary = yaml.safe_load(config)
+        except yaml.YAMLError as e:
+            print("Error: Using default path /var/lib/file_index_search/", e)
+            dictionary["db_path"] = "/var/lib/file_index_search/files.db"
+            dictionary["log_path"] = "/var/lib/file_index_search/status.log"
+    return dictionary[key]
+
 #create directory if not exist
-LOG_FILENAME = "/etc/files-index/status.log" #change this for running outside container
+if args.container:
+    print("container")
+    LOG_FILENAME = "/etc/files-index/status.log"
+else:
+    LOG_FILENAME = get_path("log_path") #change this for running outside container
+    print("not container")
 logger = logging.getLogger('status_logger')
 logger.setLevel(logging.INFO)
 handler = RotatingFileHandler(LOG_FILENAME, maxBytes=20000, backupCount=1)
@@ -19,7 +43,12 @@ logger.addHandler(handler)
 
 logger.info("Started")
 try:
-    connection = sqlite3.connect("/etc/files-index/files.db") #change this for running outside container
+    if args.container:
+        print("container")
+        connection = sqlite3.connect("/etc/files-index/files.db")
+    else:
+        connection = sqlite3.connect(get_path("db_path")) #change this for running outside container
+        print("not container")
     c = connection.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS Files
                 (
@@ -285,10 +314,16 @@ def old_entries_generator(entries, prefix):
 
 def main(): 
     #dir_path = get_dir_path()
-    try:        
-        dir_path = "/host" #change this for running outside container
+    try:   
+        if args.container:     
+            dir_path = "/host" + get_path("entrypoint") #change this for running outside container
+        else:
+            dir_path = get_path("entrypoint")
         #prefix is the parent directory of the mounted filesystem in the container
-        prefix = "/host" #change this for running outside container
+        if args.container:
+            prefix = "/host" #change this for running outside container
+        else:
+            prefix = "" 
         #print("Started updating DB")
         with os.scandir(dir_path) as entries:        
             for entry in entries:
