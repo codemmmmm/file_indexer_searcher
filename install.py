@@ -1,6 +1,7 @@
 import yaml, os, shutil, sys, subprocess
 
 def main():
+    print("Installing...")
     #scripts_dir = "/usr/local/bin/file_index_search"
     scripts_dir = "/usr/local/bin/"
     indexer = "file_indexer.py"
@@ -50,6 +51,8 @@ def main():
 
     with open(config_dir + "/config.yaml", "w") as config:
         yaml.dump(data, config)
+
+    print("Finished")
 
 if __name__ == "__main__":
     main()
