@@ -14,8 +14,9 @@ def get_path(key):
         try:
             dictionary = yaml.safe_load(config)
         except yaml.YAMLError as e:
-            print("Error: Using default path", e)
-            dictionary = { "db_path": "/var/lib/file_index_search/files.db", "log_path": "/var/lib/file_index_search/status.log" }
+            print("Error: Using default path /var/lib/file_index_search/", e)
+            dictionary["db_path"] = "/var/lib/file_index_search/files.db"
+            dictionary["log_path"] = "/var/lib/file_index_search/status.log"
     return dictionary[key]
 
 #create directory if not exist
@@ -296,7 +297,7 @@ def old_entries_generator(entries, prefix):
 def main(): 
     #dir_path = get_dir_path()
     try:        
-        dir_path = "/" #change this for running outside container
+        dir_path = get_path("entrypoint") #change this for running outside container
         #prefix is the parent directory of the mounted filesystem in the container
         prefix = "" #change this for running outside container
         #print("Started updating DB")
