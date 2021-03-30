@@ -13,27 +13,26 @@ parser = argparse.ArgumentParser(description='Scan and save all directory entrie
 parser.add_argument('--container', help='this argument is passed when it is run as container', action='store_true')
 args = parser.parse_args()
 
-def get_path(key):
+def get_config_value(key):
     if args.container:
-        conf = "/host" + "/var/lib/file_index_search/config.yaml"
+        conf_path = "/host" + "/var/lib/file_index_search/config.yaml"
     else:
-        conf = "/var/lib/file_index_search/config.yaml"
-    with open("/var/lib/file_index_search/config.yaml") as config:
+        conf_path = "/var/lib/file_index_search/config.yaml"
+    with open(conf_path) as config:
         try:
             dictionary = yaml.safe_load(config)
         except yaml.YAMLError as e:
+            #change this block
             print("Error: Using default path /var/lib/file_index_search/", e)
             dictionary["db_path"] = "/var/lib/file_index_search/files.db"
             dictionary["log_path"] = "/var/lib/file_index_search/status.log"
     return dictionary[key]
 
-#create directory if not exist
+#have to create directory if not exists?
 if args.container:
-    print("container")
     LOG_FILENAME = "/etc/files-index/status.log"
 else:
-    LOG_FILENAME = get_path("log_path") #change this for running outside container
-    print("not container")
+    LOG_FILENAME = get_config_value("log_path") #change this for running outside container
 logger = logging.getLogger('status_logger')
 logger.setLevel(logging.INFO)
 handler = RotatingFileHandler(LOG_FILENAME, maxBytes=20000, backupCount=1)
@@ -44,11 +43,9 @@ logger.addHandler(handler)
 logger.info("Started")
 try:
     if args.container:
-        print("container")
         connection = sqlite3.connect("/etc/files-index/files.db")
     else:
-        connection = sqlite3.connect(get_path("db_path")) #change this for running outside container
-        print("not container")
+        connection = sqlite3.connect(get_config_value("db_path")) #change this for running outside container
     c = connection.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS Files
                 (
@@ -315,15 +312,9 @@ def old_entries_generator(entries, prefix):
 def main(): 
     #dir_path = get_dir_path()
     try:   
-        if args.container:     
-            dir_path = "/host" + get_path("entrypoint") #change this for running outside container
-        else:
-            dir_path = get_path("entrypoint")
+        dir_path = get_config_value("entrypoint")
         #prefix is the parent directory of the mounted filesystem in the container
-        if args.container:
-            prefix = "/host" #change this for running outside container
-        else:
-            prefix = "" 
+        prefix = "/host"
         #print("Started updating DB")
         with os.scandir(dir_path) as entries:        
             for entry in entries:
