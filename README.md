@@ -87,6 +87,8 @@ It prints:
 
 Run `file_search pattern` to search.
 
+The pattern 
+
 Optional arguments:
 
 * -h, --help
@@ -105,6 +107,7 @@ Optional arguments:
 ## TODO
 
 * add more search options
+  * match exact pattern without %
 * maybe: users can only see their own entries (uid)
 * GUI
 * analyzing: what file types (extension) take up how much space, recommend to remove old files
