@@ -6,11 +6,11 @@
 * Run the install script `sudo python install.py`
 * The directory may now be deleted
 
-The database and log path are saved in /var/lib/file_index_search/config.yaml.
+The database and log path are saved in `/var/lib/file_index_search/config.yaml`.
 
 # File indexer
 
-Scans and saves all directory entries in a linux filesystem into a SQLite DB, except "/proc", "/var", "/run", "/sys", "/dev" and "/boot".
+Scans and saves all directory entries in a linux filesystem into a SQLite DB, except `/proc`, `/var`, `/run`, `/sys`, `/dev` and `/boot`.
 
 ## Database
 
