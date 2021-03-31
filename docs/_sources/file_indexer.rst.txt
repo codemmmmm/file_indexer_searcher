@@ -1,0 +1,7 @@
+file\_indexer module
+====================
+
+.. automodule:: file_indexer
+   :members:
+   :undoc-members:
+   :show-inheritance:

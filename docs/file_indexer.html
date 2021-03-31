@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>file_indexer module &#8212; file_indexer_searcher 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="file_search module" href="file_search.html" />
+    <link rel="prev" title="file_list" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-file_indexer">
+<span id="file-indexer-module"></span><h1>file_indexer module<a class="headerlink" href="#module-file_indexer" title="Permalink to this headline">¶</a></h1>
+<p>Scans and saves all directory entries in a linux filesystem into a SQLite DB, 
+except “/proc”, “/var”, “/run”, “/sys”, “/dev” and “/boot”.
+Configuration data is saved in “/var/lib/file_index_search/config.yaml”.</p>
+<dl class="py function">
+<dt id="file_indexer.add_entry">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">add_entry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.add_entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>SQLite query to insert an entry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> (<em>tuple</em>) – values for the database entry</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.get_config_value">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">get_config_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.get_config_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.get_current_time">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">get_current_time</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.get_current_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns current time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>current time formatted yy-mm-dd hh:mm:ss</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.get_dir_path">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">get_dir_path</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.get_dir_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>get directory path to index from the user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The directory path to be scanned</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.get_file_type">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">get_file_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.get_file_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns file type: “directory”, “file” or “symlink” and if it is hidden</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>f</strong> (<em>DirEntry</em>) – directory entry: file or directory (or link)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>file type</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.has_hidden_attribute">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">has_hidden_attribute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.has_hidden_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns true if file has the os stat hidden attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>string</em>) – file path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it has the hidden attribute, else False</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.is_hidden">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">is_hidden</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.is_hidden" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns true if it is a hidden .file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>string</em>) – file path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if it is hidden, else False</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.list_files">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">list_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.list_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>recursively scans and adds or updates all directory entries</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir_path</strong> (<em>string</em>) – directory path</p></li>
+<li><p><strong>prefix</strong> (<em>string</em>) – path prefix for when it is run as a container with mounted file system</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.main">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.md5_file">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">md5_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_creation_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_last_mod_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_owner</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.md5_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns MD5 hash of the file path, creation date, last modification date
+and file owner, serving as key in the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>string</em>) – file path</p></li>
+<li><p><strong>file_creation_date</strong> (<em>string</em>) – file creation date</p></li>
+<li><p><strong>file_last_mod_date</strong> (<em>string</em>) – file last modification date</p></li>
+<li><p><strong>file_owner</strong> (<em>integer</em>) – file owner id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns MD5 hash of the arguments as key</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.md5_path">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">md5_path</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.md5_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns MD5 hash of the file path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>string</em>) – file path</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MD5 hash of the file path</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.old_entries_generator">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">old_entries_generator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.old_entries_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>generator returning all old database entries</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entries</strong> (<em>tuple</em>) – tuple of all file paths that exist in the database</p></li>
+<li><p><strong>prefix</strong> (<em>string</em>) – path prefix for when it is run as a container with mounted file system</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yield</dt>
+<dd class="field-even"><p>all database entries that don’t exist in the filesystem anymore</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.remove_old_entries">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">remove_old_entries</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.remove_old_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes all old entries from the database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prefix</strong> (<em>string</em>) – path prefix for when it is run as a container with mounted file system</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="file_indexer.update_entry">
+<code class="sig-prename descclassname"><span class="pre">file_indexer.</span></code><code class="sig-name descname"><span class="pre">update_entry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#file_indexer.update_entry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>adds new entry to database or updates the entry if the file has changed:</dt><dd><p>file path hashed, current time, file name, file extension, file type,
+file path, file path (placeholder), directory path, file size, 
+file creation date, last modification date, file owner, key</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>DirEntry</em>) – directory entry: file or directory (or link)</p></li>
+<li><p><strong>dir_path</strong> (<em>string</em>) – directory path</p></li>
+<li><p><strong>prefix</strong> (<em>string</em>) – path prefix for when it is run as a container with mounted file system</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">file_indexer_searcher</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">file_list</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">file_indexer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_search.html">file_search module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">file_list</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">file_list</a></li>
+      <li>Next: <a href="file_search.html" title="next chapter">file_search module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Moritz Mueller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/file_indexer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
