@@ -37,7 +37,7 @@ The first run, i.e. when the database is empty, will take much longer. If the lo
 
 Run `file_indexer` to start the indexing.
 
-### Installation as container
+### Installation as docker container
 
 Build it yourself with the Dockerfile:
 
@@ -45,7 +45,7 @@ Build it yourself with the Dockerfile:
   
 * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly name`
 
-### Use as a service
+### Use the container as a service
 
 Copy the mindex.service and mindex.timer to /etc/systemd/system.
 
