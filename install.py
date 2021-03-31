@@ -19,34 +19,21 @@ def main():
         entrypoint = input("Please enter the entry point for the indexer: ")
     installation = "native" #this value is never used
     config_dir = "/var/lib/file_index_search/"
+    scripts_dir = "/usr/local/bin/"
+    indexer = "file_indexer.py"
+    searcher = "file_search.py"
     
-    if get_choice() == 1:
-        scripts_dir = "/usr/local/bin/"
-        indexer = "file_indexer.py"
-        searcher = "file_search.py"
-
+    if get_choice() == 1:        
         os.rename(indexer, indexer[:-3])
-        os.rename(searcher, searcher[:-3])
-        indexer = indexer[:-3]
-        searcher = searcher[:-3]
-        os.chmod(indexer, 0o744)     
-        os.chmod(searcher, 0o744)
+        indexer = indexer[:-3]        
+        os.chmod(indexer, 0o744)
 
+        #if the script is run without enough permission, rerunning will break on the next run because filenames already changed
         try:
             shutil.move(indexer, scripts_dir) 
         except shutil.Error:
             os.remove(os.path.join(scripts_dir, indexer))
             shutil.move(indexer, scripts_dir)
-        except Exception as e:
-            print(e)
-            sys.exit("Couldn't move the python files to the destination directory")
-        
-        #if the script is run without enough permission, rerunning will break on the next run because filenames already changed
-        try:   
-            shutil.move(searcher, scripts_dir)
-        except shutil.Error:
-            os.remove(os.path.join(scripts_dir, searcher))
-            shutil.move(searcher, scripts_dir)
         except Exception as e:
             print(e)
             sys.exit("Couldn't move the python files to the destination directory")
@@ -67,6 +54,18 @@ def main():
         installation = "container"
         print("Run 'docker build -t [name] .' in the source directory to build the image.")
         print('docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target="/host",readonly [name]')
+
+    os.rename(searcher, searcher[:-3])
+    searcher = searcher[:-3]
+    os.chmod(searcher, 0o744)
+    try:   
+        shutil.move(searcher, scripts_dir)
+    except shutil.Error:
+        os.remove(os.path.join(scripts_dir, searcher))
+        shutil.move(searcher, scripts_dir)
+    except Exception as e:
+        print(e)
+        sys.exit("Couldn't move the python files to the destination directory")
 
     data = dict()
     data["installation"] = installation
