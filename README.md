@@ -33,7 +33,23 @@ The database saves:
 
 The first run, i.e. when the database is empty, will take much longer. If the log shows a "started" entry and no "finished" or error entry the application is still working.
 
+### Native installation
+
 Run `file_indexer` to start the indexing.
+
+### Installation as container
+
+* Run my dockerhub image:
+
+  * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly mmdockermmmm/indexer_ubuntu`
+
+* Build it yourself with the Dockerfile:
+
+  * `docker build -t [tag] .` 
+  
+  * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly [tag]`
+
+Run `docker inspect files-db` for the database and log location on the container.
 
 ## TODO
 
