@@ -72,7 +72,7 @@ It prints:
 
 ## Usage
 
-Run `file_search [pattern]` to search.
+Run `file_search pattern` to search.
 
 Optional arguments:
 
