@@ -66,7 +66,7 @@ Shows all files or directories that fit the name pattern from the database.
 It prints:
 
 * file path
-* file type
+* file type (this property should mostly be ignored because it isn't accurate)
 * file size
 * last modification date
 
