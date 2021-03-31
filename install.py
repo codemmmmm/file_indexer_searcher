@@ -52,8 +52,8 @@ def main():
         entrypoint = "/host" + entrypoint
         prefix = "/host"
         installation = "container"
-        print("Run 'docker build -t [name] .' in the source directory to build the image.")
-        print('docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target="/host",readonly [name]')
+        print("Run 'docker build -t name .' to build the image.")
+        print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source="/",target=\"/host\",readonly name' to use the indexer.")
 
     os.rename(searcher, searcher[:-3])
     searcher = searcher[:-3]
