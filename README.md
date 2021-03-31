@@ -87,7 +87,7 @@ It prints:
 
 Run `file_search pattern` to search.
 
-The pattern 
+The pattern is matched with the SQLite [LIKE] (https://sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators) operator, it can include "%" (any sequence of zero or more characters) and "\_" (any single character). It will automatically match as "%pattern%".
 
 Optional arguments:
 
