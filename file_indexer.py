@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Scans and saves all directory entries in a linux filesystem into a SQLite DB, 
 except "/proc", "/var", "/run", "/sys", "/dev" and "/boot".
-Meant to be used as a docker container.
-Logs the progress at "/etc/files-index/status.log" (in container).
+Configuration data is saved in "/var/lib/file_index_search/config.yaml".
 """
 
 import os, stat, sqlite3, datetime, hashlib, time, logging, collections, yaml, argparse
