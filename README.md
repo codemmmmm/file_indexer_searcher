@@ -2,7 +2,7 @@
 
 ## Installation
 
-* Download the directory
+* Download and change to the directory
 * Run the install script `sudo python install.py`
 * The directory may now be deleted
 
