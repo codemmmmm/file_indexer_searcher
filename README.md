@@ -101,3 +101,5 @@ Optional arguments:
 
 * add more search options
 * maybe: users can only see their own entries (uid)
+* GUI
+* analyzing: what file types (extension) take up how much space, recommend to remove old files
