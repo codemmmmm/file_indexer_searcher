@@ -24,8 +24,8 @@ def main():
     searcher = "file_search.py"
     
     if get_choice() == 1:        
-        #remove file extension
-        os.rename(indexer, indexer[:-3])
+        #move executable file_indexer
+        os.rename(indexer, indexer[:-3]) #remove file extension
         indexer = indexer[:-3]        
         os.chmod(indexer, 0o744)
 
@@ -48,6 +48,7 @@ def main():
         db_path = os.path.join(db_dir, "files.db")
         log_path = os.path.join(db_dir, "status.log")
     else:
+        #just create logs for container installation
         #when it is run as a container, db_path and log_path aren't needed for the indexer itself
         db_path = "/var/lib/docker/volumes/files-db/_data/files.db"
         log_path = "/var/lib/docker/volumes/files-db/_data/status.log"
@@ -57,6 +58,7 @@ def main():
         print("Run 'docker build -t name .' to build the image.")
         print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source="/",target=\"/host\",readonly name' to use the indexer.")
 
+    #move executable file_search
     #remove file extension
     os.rename(searcher, searcher[:-3])
     searcher = searcher[:-3]
