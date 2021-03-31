@@ -2,7 +2,7 @@
 
 ## Installation
 
-* Download the directory
+* Download and change to the directory
 * Run the install script `sudo python install.py`
 * The directory may now be deleted
 
@@ -33,7 +33,25 @@ The database saves:
 
 The first run, i.e. when the database is empty, will take much longer. If the log shows a "started" entry and no "finished" or error entry the application is still working.
 
+### Native installation
+
 Run `file_indexer` to start the indexing.
+
+### Installation as docker container
+
+Build it yourself with the Dockerfile:
+
+* `docker build -t name .` 
+  
+* `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly name`
+
+### Use the container as a service
+
+Copy the mindex.service and mindex.timer to /etc/systemd/system.
+
+Enable (and start) the service and timer. By default it will run 15 minutes after systemd start and every 12 hours after that.
+
+The service uses my dockerhub image mmdockermmmm/indexer_ubuntu which requires the config file to be created by the install script using the container  installation option.
 
 ## TODO
 
@@ -41,13 +59,11 @@ Run `file_indexer` to start the indexing.
 * Change the try for UnicodeEncodeError so that it doesn't just skip the entry (it currently is a workaround because it threw errors at multiple places)
 * Make is_hidden() work for directories like /home/moritz/.mozilla
 * Why are all entries counted as symlinks
-* Add more exception handling
 * Make excluding /... directories optional
 * Make exckuding hidden directories optional
 * File extension field for directories should be null
 * Get input from user to decide which directory to scan (in run command?)
 * Check .is_dir() less often
-* Why is the output printed only after the scan is run?
 * Maybe use os.walk() instead of own function
 * Make it work for windows
 
@@ -58,13 +74,13 @@ Shows all files or directories that fit the name pattern from the database.
 It prints:
 
 * file path
-* file type
+* file type (this property should mostly be ignored because it isn't accurate)
 * file size
 * last modification date
 
 ## Usage
 
-Run `file_search [pattern]` to search.
+Run `file_search pattern` to search.
 
 Optional arguments:
 
@@ -84,5 +100,4 @@ Optional arguments:
 ## TODO
 
 * add more search options
-  * order by size or modification date
 * maybe: users can only see their own entries (uid)
