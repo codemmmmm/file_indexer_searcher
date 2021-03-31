@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
+"""Searches the filenames in the SQLite database for a pattern and prints matching entries
+"""
+
 import argparse, sqlite3, sys, yaml
 
 def get_path(key):
+    """returns a value from the dictionary structure in the config.yaml file
+
+    :param key: the dictionary key
+    :type key: string
+    :return: the key's value
+    :rtype: string
+    """
     with open("/var/lib/file_index_search/config.yaml") as config:
         try:
             dictionary = yaml.safe_load(config)
@@ -12,13 +22,24 @@ def get_path(key):
 
 try:
     connection = sqlite3.connect(get_path("db_path"))
-    #connection = sqlite3.connect('/var/lib/docker/volumes/files-db/_data/files.db')
     c = connection.cursor()
 except Exception as e:
     print("Exception:", e)
     sys.exit("Invalid database path")
 
 def print_entries(pattern, minSize, maxSize, case):
+    """Select all database entries matching the pattern. 
+    Print the entries' path, size, file type and last modification date.
+
+    :param pattern: pattern for matching the entries
+    :type pattern: string
+    :param minSize: only match entries this size or bigger, default 0 bytes
+    :type minSize: int
+    :param maxSize: only match entries up to this size, default 9000000000000000000 bytes
+    :type maxSize: int
+    :param case: sets case-sensitive pattern matching
+    :type case: bool
+    """
     if case:
         c.execute('PRAGMA case_sensitive_like = on')
 
