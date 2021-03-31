@@ -41,13 +41,11 @@ Run `file_indexer` to start the indexing.
 * Change the try for UnicodeEncodeError so that it doesn't just skip the entry (it currently is a workaround because it threw errors at multiple places)
 * Make is_hidden() work for directories like /home/moritz/.mozilla
 * Why are all entries counted as symlinks
-* Add more exception handling
 * Make excluding /... directories optional
 * Make exckuding hidden directories optional
 * File extension field for directories should be null
 * Get input from user to decide which directory to scan (in run command?)
 * Check .is_dir() less often
-* Why is the output printed only after the scan is run?
 * Maybe use os.walk() instead of own function
 * Make it work for windows
 
@@ -84,5 +82,4 @@ Optional arguments:
 ## TODO
 
 * add more search options
-  * order by size or modification date
 * maybe: users can only see their own entries (uid)
