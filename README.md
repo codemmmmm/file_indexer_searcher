@@ -39,17 +39,11 @@ Run `file_indexer` to start the indexing.
 
 ### Installation as container
 
-* Run my dockerhub image:
+Build it yourself with the Dockerfile:
 
-  * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly mmdockermmmm/indexer_ubuntu`
-
-* Build it yourself with the Dockerfile:
-
-  * `docker build -t [tag] .` 
+* `docker build -t name .` 
   
-  * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly [tag]`
-
-Run `docker inspect files-db` for the database and log location on the container.
+* `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly name`
 
 ## TODO
 
