@@ -2,9 +2,9 @@
 
 ## Installation
 
-* Download and change to the directory
-* Run the install script `sudo python install.py`
-* The directory may now be deleted
+* Download and change to the directory.
+* Run the install script `sudo python install.py`.
+* The directory may now be deleted.
 
 The database and log path are saved in `/var/lib/file_index_search/config.yaml`.
 
