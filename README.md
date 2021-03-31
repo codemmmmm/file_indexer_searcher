@@ -51,7 +51,7 @@ Copy the mindex.service and mindex.timer to /etc/systemd/system.
 
 Enable (and start) the service and timer. By default it will run 15 minutes after systemd start and every 12 hours after that.
 
-The service will use my dockerhub image mmdockermmmm/indexer_ubuntu which requires the config file to be created by the install script using the container  installation option.
+The service uses my dockerhub image mmdockermmmm/indexer_ubuntu which requires the config file to be created by the install script using the container  installation option.
 
 ## TODO
 
