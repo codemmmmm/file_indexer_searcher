@@ -37,6 +37,12 @@ The first run, i.e. when the database is empty, will take much longer. If the lo
 
 Run `file_indexer` to start the indexing.
 
+As a service:
+
+* Replace line 6 in mindex.service with `ExecStart=/bin/bash -c "file_indexer"`.
+* Copy the mindex.service and mindex.timer to `/etc/systemd/system`.
+* Enable (and start) the service and timer. By default it will run 15 minutes after systemd start and every 12 hours after that.
+
 ### Installation as docker container
 
 Build it yourself with the Dockerfile:
@@ -45,13 +51,12 @@ Build it yourself with the Dockerfile:
   
 * `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly name`
 
-### Use the container as a service
+As a service:
 
-Copy the mindex.service and mindex.timer to /etc/systemd/system.
+* Copy the mindex.service and mindex.timer to `/etc/systemd/system`.
+* Enable (and start) the service and timer. By default it will run 15 minutes after systemd start and every 12 hours after that.
 
-Enable (and start) the service and timer. By default it will run 15 minutes after systemd start and every 12 hours after that.
-
-The service uses my dockerhub image mmdockermmmm/indexer_ubuntu which requires the config file to be created by the install script using the container  installation option.
+The service uses my dockerhub image mmdockermmmm/indexer_ubuntu.
 
 ## TODO
 
