@@ -3,10 +3,10 @@ import yaml, os, shutil, sys, subprocess
 def get_choice():    
     while True:
         choice = input("Choose Installation:\n   1 Native installation\n   2 Installation as container ")
-        if choice == "1":
+        if choice == 1 or choice == "1":
             print("Installing natively...")
             return 1
-        if choice == "2":
+        if choice == 2 or choice == "2":
             print("Installing as container...")
             return 2
         
@@ -56,7 +56,7 @@ def main():
         prefix = "/host"
         installation = "container"
         print("Run 'docker build -t name .' to build the image.")
-        print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source="/",target=\"/host\",readonly name' to use the indexer.")
+        print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source=\"/\",target=\"/host\",readonly name' to use the indexer.")
 
     #move executable file_search
     #remove file extension
