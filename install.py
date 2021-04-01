@@ -12,6 +12,10 @@ def get_choice():
             return 2
         
 def main():
+    #python 3.* is needed for input() to work as needed
+    if sys.version_info.major < 3:
+        raise Exception("Must be using Python 3")
+
     db_path = ""
     log_path = ""
     prefix = ""
