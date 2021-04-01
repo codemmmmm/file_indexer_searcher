@@ -58,7 +58,7 @@ def main():
         installation = "container"
         subprocess.call(["docker", "build", "-t", "indexer", "."])
         #print("Run 'docker build -t name .' to build the image.")
-        print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source=\"/\",target=\"/host\",readonly name' to use the indexer.")
+        print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source=\"/\",target=\"/host\",readonly indexer' to use the indexer.")
 
     #move executable file_search
     #remove file extension
