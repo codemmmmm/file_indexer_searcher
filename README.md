@@ -3,7 +3,7 @@
 ## Installation
 
 * Download and change to the directory.
-* Run the install script `sudo python install.py`.
+* Run the install script `sudo python3 install.py`. Python 3 is required.
 * The directory may now be deleted.
 
 The database and log path are saved in `/var/lib/file_index_search/config.yaml`.
