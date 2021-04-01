@@ -3,7 +3,7 @@
 Description=Runs the file indexer container
 
 [Service]
-ExecStart=/bin/bash -c "/usr/bin/docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target="/host",readonly mmdockermmmm/indexer_ubuntu"
+ExecStart=/bin/bash -c "/usr/bin/docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target="/host",readonly indexer"
 Restart=on-failure
 RestartSec=3
 
