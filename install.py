@@ -1,4 +1,4 @@
-import yaml, os, shutil, sys, subprocess
+import yaml, os, shutil, sys, subprocess, colorama
 
 def get_choice():    
     while True:
@@ -57,8 +57,9 @@ def main():
         prefix = "/host"
         installation = "container"
         subprocess.call(["docker", "build", "-t", "indexer", "."])
-        #print("Run 'docker build -t name .' to build the image.")
-        print("Run 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source=\"/\",target=\"/host\",readonly indexer' to use the indexer.")
+        print("Run")
+        print(colorama.Fore.YELLOW + 'docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target=\"/etc/files-index\" --mount type=bind,source=\"/\",target=\"/host\",readonly indexer')
+        print(colorama.Style.RESET_ALL + "to use the indexer.") 
 
     #move executable file_search
     #remove file extension
