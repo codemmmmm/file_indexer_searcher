@@ -5,6 +5,7 @@
 * Download and change to the directory.
 * Run the install script `sudo python3 install.py`. Python 3 is required.
 * The directory may now be deleted.
+* Some python libraries might be missing. Install the missing ones by running e.g. `pip install pyyaml'.
 
 The database and log path are saved in `/var/lib/file_index_search/config.yaml`.
 
