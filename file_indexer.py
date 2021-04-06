@@ -18,6 +18,7 @@ def get_config_value(key):
     else:
         conf_path = "/var/lib/file_index_search/config.yaml"
     with open(conf_path) as config:
+        dictionary = {}
         try:
             dictionary = yaml.safe_load(config)
         except yaml.YAMLError as e:
