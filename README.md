@@ -67,6 +67,7 @@ As a service:
 * Check .is_dir() less often
 * Maybe use os.walk() instead of own function
 * Make it work for windows
+* Where to save config files? https://unix.stackexchange.com/questions/68721/where-should-user-configuration-files-go
 
 # File searcher
 
