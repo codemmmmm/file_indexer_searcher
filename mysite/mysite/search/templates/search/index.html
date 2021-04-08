@@ -6,8 +6,7 @@
   </head>
   <body>
     <h1>File search</h1>
-    {% block content %}Error: Failed loading form!{% endblock %}
-
+    {% block content %}{% endblock %}
       <!--
       <form method="post">
       {% csrf_token %}                
@@ -33,7 +32,7 @@
       -->
     
 
-    {% if filtered_entries %}
+    {% if entries %}
         <table>
             <tr>
                 <th>File path</th>
@@ -41,7 +40,7 @@
                 <th>File size</th>
                 <th>Last modification date</th>
             </tr>                        
-        {% for entry in filtered_entries %}
+        {% for entry in entries %}
             <tr>
                 <td>{{ entry.filefullpath }}</td>
                 <td>{{ entry.filetype }}</td>

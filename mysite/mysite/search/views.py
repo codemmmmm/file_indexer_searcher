@@ -7,7 +7,7 @@ from .forms import SearchForm
 
 def index(request): 
     context = {
-        'filtered_entries': Files.objects.all()[:5],
+        'entries': Files.objects.all()[:5],
     }
     return render(request, 'search/index.html', context)
 
@@ -25,10 +25,18 @@ def search(request):
 
         # Check if the form is valid:
         if form.is_valid():
-            #process the data in form.cleaned_data as required           
+            #process the data in form.cleaned_data as required 
+            pattern = form.cleaned_data['pattern']
+            min_size = int(form.cleaned_data['min_size'])
+            max_size = int(form.cleaned_data['min_size'])
+            case_sens = form.cleaned_data['min_size']
+            context = {
+                'entries': Files.objects.filter(filefullpath__icontains=pattern, filesize__gte=min_size, filesize__lte=max_size)
+            }
 
             #redirect to a new URL:
-            return HttpResponseRedirect(reverse('index')) #HttpResponseRedirect(reverse('search/index'))
+            return render(request, 'search/index.html', context)
+            #return HttpResponseRedirect(reverse('index')) #HttpResponseRedirect(reverse('search/index'))
 
     # If this is a GET (or any other method) create the default form.
     else:
