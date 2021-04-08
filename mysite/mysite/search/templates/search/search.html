@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+  </head>
+  <body>
+    <h1>File search</h1>    
+      <!--
+      <form method="post">
+      {% csrf_token %}                
+         add order by 
+          <div>
+            <label for="pattern">Pattern:</label>
+            <input type="text" id="pattern" name="pattern" maxlength="300">
+          </div>
+          <div>
+            <label for="min_size">Minimum size:</label>
+            <input type="text" id="min_size" name="min_size" value="0" maxlength="19">
+          </div>        
+          <div>
+            <label for="max_size">Maximum size:</label>
+            <input type="text" id="max_size" name="max_size" value="9000000000000000000" maxlength="19">
+          </div>
+          <div>
+            <input type="checkbox" id="case_sensitive" name="case_sensitive" value="True">
+            <label for="case_sensitive">Case sensitivity</label>
+          </div>          
+          <input type="submit" value="Search">
+      </form>
+      -->
+      <form method="post">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        </table>
+        <input type="submit" value="Search">
+      </form> 
+    
+    {% block entries %}<br><br>No matching entries!{% endblock %}
+
+    
+  </body>
+</html>

@@ -35,7 +35,7 @@ def search(request):
             }
 
             #redirect to a new URL:
-            return render(request, 'search/index.html', context)
+            return render(request, 'search/results.html', context)
             #return HttpResponseRedirect(reverse('index')) #HttpResponseRedirect(reverse('search/index'))
 
     # If this is a GET (or any other method) create the default form.
@@ -46,7 +46,7 @@ def search(request):
         'form': form,
     }
 
-    return render(request, 'search/index_form.html', context)
+    return render(request, 'search/search.html', context)
     
 
 
