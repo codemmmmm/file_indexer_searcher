@@ -42,7 +42,7 @@
             </tr>                        
         {% for entry in entries %}
             <tr>
-                <td>{{ entry.filefullpath }}</td>
+                <td><a href=file:///{{ entry.filefullpath }}>{{ entry.filefullpath }}</a></td>
                 <td>{{ entry.filetype }}</td>
                 <td>{{ entry.filesize|filesizeformat }}</td> <!--shows e.g. MB when it is MiB, i.e. actually divided by 1024-->
                 <td>{{ entry.filelastmodificationdate }}</td>

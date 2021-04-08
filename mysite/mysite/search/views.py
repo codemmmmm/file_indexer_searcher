@@ -28,8 +28,8 @@ def search(request):
             #process the data in form.cleaned_data as required 
             pattern = form.cleaned_data['pattern']
             min_size = int(form.cleaned_data['min_size'])
-            max_size = int(form.cleaned_data['min_size'])
-            case_sens = form.cleaned_data['min_size']
+            max_size = int(form.cleaned_data['max_size'])
+            case_sensitive = form.cleaned_data['case_sensitive']
             context = {
                 'entries': Files.objects.filter(filefullpath__icontains=pattern, filesize__gte=min_size, filesize__lte=max_size)
             }
