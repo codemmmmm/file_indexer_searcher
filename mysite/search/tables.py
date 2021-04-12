@@ -3,7 +3,8 @@ from .models import Files
 
 class FilesTable(tables.Table):  
     filetype = tables.Column(orderable=False)
-     
+
     class Meta:
         model = Files        
         fields = ("filefullpath", "filetype", "filesize", "filelastmodificationdate")
+        template_name = "django_tables2/bootstrap.html"
