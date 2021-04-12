@@ -29,7 +29,7 @@
           <input type="submit" value="Search">
       </form>
       -->
-      <form method="post">
+      <form action="results" method="post">
         {% csrf_token %}
         <table>
         {{ form.as_table }}
@@ -37,7 +37,7 @@
         <input type="submit" value="Search">
       </form> 
     
-    {% block entries %}<br><br>No matching entries!{% endblock %}
+    <!--{% block entries %}<br><br>No matching entries!{% endblock %}-->
 
     
   </body>

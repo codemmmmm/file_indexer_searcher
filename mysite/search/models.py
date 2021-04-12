@@ -14,13 +14,13 @@ class Files(models.Model):
     currenttime = models.TextField(db_column='CurrentTime', blank=True, null=False)  # Field name made lowercase.
     filename = models.TextField(db_column='FileName', blank=True, null=False)  # Field name made lowercase.
     fileextension = models.TextField(db_column='FileExtension', blank=True, null=False)  # Field name made lowercase.
-    filetype = models.TextField(db_column='FileType', blank=True, null=False)  # Field name made lowercase.
-    filefullpath = models.TextField(db_column='FileFullPath', unique=True, blank=True, null=False)  # Field name made lowercase.
+    filetype = models.TextField(db_column='FileType', blank=True, null=False, verbose_name="File type")  # Field name made lowercase.
+    filefullpath = models.TextField(db_column='FileFullPath', unique=True, blank=True, null=False, verbose_name="File path")  # Field name made lowercase.
     filefullpathplaceholder = models.TextField(db_column='FileFullPathPlaceholder', blank=True, null=False)  # Field name made lowercase.
     directorypath = models.TextField(db_column='DirectoryPath', blank=True, null=False)  # Field name made lowercase.
-    filesize = models.IntegerField(db_column='FileSize', blank=True, null=False)  # Field name made lowercase.
+    filesize = models.IntegerField(db_column='FileSize', blank=True, null=False, verbose_name="File size")  # Field name made lowercase.
     filecreationdate = models.TextField(db_column='FileCreationDate', blank=True, null=False)  # Field name made lowercase.
-    filelastmodificationdate = models.TextField(db_column='FileLastModificationDate', blank=True, null=False)  # Field name made lowercase.
+    filelastmodificationdate = models.TextField(db_column='FileLastModificationDate', blank=True, null=False, verbose_name="Last modified")  # Field name made lowercase.
     fileowner = models.TextField(db_column='FileOwner', blank=True, null=False)  # Field name made lowercase.
     key = models.TextField(db_column='Key', primary_key=True, blank=True, null=False)  # Field name made lowercase.
 

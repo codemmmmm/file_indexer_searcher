@@ -1,22 +1,10 @@
-{% extends "search/search.html" %}
-
-    {% block entries %}
-    <br>
-    Click the file to copy the path to clipboard.
-    <table>
-        <tr>
-            <th>File path</th>
-            <th>File type</th>
-            <th>File size</th>
-            <th>Last modification date</th>
-        </tr>                        
-    {% for entry in entries %}
-        <tr>
-            <td><a href="#" onClick="navigator.clipboard.writeText(this.text)">{{ entry.filefullpath }}</a></td>
-            <td>{{ entry.filetype }}</td>
-            <td>{{ entry.filesize|filesizeformat }}</td> <!--shows e.g. MB when it is MiB, i.e. actually divided by 1024-->
-            <td>{{ entry.filelastmodificationdate }}</td>
-        </tr>
-    {% endfor %}
-    </table>
-    {% endblock %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+    <head>
+        <title>List of files</title>
+    </head>
+    <body>
+        {% render_table table %}
+    </body>
+</html>
