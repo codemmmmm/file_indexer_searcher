@@ -3,6 +3,7 @@ from .models import Files
 
 class FilesTable(tables.Table):  
     filetype = tables.Column(orderable=False)
+    filefullpath = tables.Column(attrs={"td": {"onClick": "navigator.clipboard.writeText(this.innerText); alert('Copied file path to clipboard!');"}})
 
     class Meta:
         model = Files        
