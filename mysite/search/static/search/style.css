@@ -11,7 +11,12 @@ body {
     font-size: 14px;
 }
 
-input[type=submit]:hover{
-    background: violet;
+.submit {
+    background-color: red;
 }
+
+.submit:hover {
+    background-color: yellowgreen;
+}
+
 
