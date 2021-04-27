@@ -3,21 +3,33 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView
+from django.core import serializers
+from django.db.models import Count
 from django_tables2.config import RequestConfig
 from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
 from .models import Files
 from .forms import SearchForm
 from .tables import FilesTable
 
+def get_graph():
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image = buffer.getvalue()
+    graph = base64.b64encode(image)
+    graph = graph.decode('utf-8')
+    buffer.close()
+    return graph
+
+def get_plot():
+    graph = "x"
+
 def results(request):
     if request.method == 'POST':
-        #check cookie from previous view
-        #if request.session.test_cookie_worked():
-        #    request.session.delete_test_cookie()
-        #else:
-        #    return HttpResponse("Please enable cookies and try again.")
-
         # Create a form instance and populate it with data from the request (binding):
         form = SearchForm(request.POST)
 
@@ -46,7 +58,9 @@ def results(request):
             if not form.cleaned_data['max_age'] == None:
                 max_age = int(form.cleaned_data['max_age'])
             else:
-                max_age = 200000           
+                max_age = 200000 
+
+            data_format = form.cleaned_data['data_format']
             
             request.session['pattern'] = pattern
             request.session['min_size'] = min_size
@@ -54,6 +68,7 @@ def results(request):
             request.session['case_sensitive'] = case_sensitive
             request.session['min_age'] = min_age
             request.session['max_age'] = max_age
+            request.session['data_format'] = data_format
     #if GET
     else:
         #get the form data from the session
@@ -64,14 +79,16 @@ def results(request):
             case_sensitive = request.session['case_sensitive']
             min_age = request.session['min_age']
             max_age = request.session['max_age']
+            data_format = request.session['data_format']
         except KeyError:
             return HttpResponse('Please enable cookies.')
+
+    #if data_format == 'json':
+    #    json = serializers.serialize('json', Files.objects.all())
 
     data = Files.objects.filter(filefullpath__icontains=pattern, filesize__gte=min_size, filesize__lte=max_size)
     min_date = datetime.today() - timedelta(days=min_age)
     data = data.exclude(filelastmodificationdate__gt=min_date)
-    #Bug: when max_age = 0, all entries are shown
-    # when 0 is entered, somehow the max_value is taken
     max_date = datetime.today() - timedelta(days=int(max_age))
     data = data.exclude(filelastmodificationdate__lt=max_date)
     table = FilesTable(data)    
@@ -79,13 +96,31 @@ def results(request):
     return render(request, 'search/results.html', {'table': table })
 
 def search(request):
-    #request.session.set_test_cookie()
     form = SearchForm()
 
     context = {
         'form': form,
     }
 
+    #only file extensions occuring more often than 1% of all files are shown
+    total = Files.objects.count()
+    min_count =  total * 0.01
+    #group by file extension and count, exclude empty extension, take only
+    extensions = Files.objects.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c').exclude(fileextension="")
+    extensions_count = 0 #number of all files that are listed to calculate the "other" extensions pie size
+    for element in extensions:
+        extensions_count += element[1]
+    extension_names = [x[0] for x in extensions]
+    extension_names.append("Other")
+    extension_counts = [x[1] for x in extensions]
+    extension_counts.append(total - extensions_count) #number of "other" filetypes that are too few to have their own listing
+    
+    fig1, ax1 = plt.subplots()
+    ax1.pie(extension_counts, labels=extension_names)
+    ax1.axis('equal')
+    plt.savefig("x")
+    
+    return HttpResponse(extensions)
     return render(request, 'search/search.html', context)
     
 

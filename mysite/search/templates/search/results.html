@@ -6,6 +6,12 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     </head>
     <body>
-        {% render_table table %}
+        <div id="results">
+            {% render_table table %}
+        </div>
+        
+        <div id="graphs">
+            {% block graphs %} {% endblock %}
+        </div>
     </body>
 </html>
