@@ -11,7 +11,7 @@
         </div>
         
         <div id="charts">
-            {% block charts %} {% endblock %}
+            <img src="data:image/png;base64, {{chart|safe}}" alt="distribution of file types (file extensions)"/>
         </div>
     </body>
 </html>

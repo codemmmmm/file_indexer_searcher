@@ -92,8 +92,6 @@ def results(request):
             request.session['data_format'] = data_format
     #if GET
     else:
-        chart = get_plot()
-        return render(request, 'search/graphs.html', {'chart': chart })
         #get the form data from the session
         try:
             pattern = request.session['pattern']
@@ -119,7 +117,7 @@ def results(request):
     
 
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
-    return render(request, 'search/results.html', {'table': table })
+    return render(request, 'search/results.html', {'table': table, 'chart': get_plot() })
 
 def search(request):
     form = SearchForm()
