@@ -1,8 +1,8 @@
-{% extends "results.html" %}
+{% extends "search/results.html" %}
 
 
-{% block graphs %}
+{% block charts %}
 
-
+<img src="data:image/png;base64, {{chart|safe}}" alt="distribution of file types (file extensions)"/>
 
 {% endblock %}

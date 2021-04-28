@@ -15,18 +15,39 @@ from .models import Files
 from .forms import SearchForm
 from .tables import FilesTable
 
-def get_graph():
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    image = buffer.getvalue()
-    graph = base64.b64encode(image)
-    graph = graph.decode('utf-8')
-    buffer.close()
-    return graph
+# def get_chart():
+#     buffer = BytesIO()
+#     plt.savefig(buffer, format='png')
+#     buffer.seek(0)
+#     image = buffer.getvalue()
+#     chart = base64.b64encode(image)
+#     chart = chart.decode('utf-8')
+#     buffer.close()
+#     return chart
 
+#how to do without pyplot?
 def get_plot():
-    graph = "x"
+    #only file extensions occuring more often than 1% of all files are shown
+    total = Files.objects.count()
+    min_count =  total * 0.01
+    #group by file extension and count, exclude empty extension, take only
+    extensions = Files.objects.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c').exclude(fileextension="")
+    extensions_count = 0 #number of all files that are listed to calculate the "other" extensions pie size
+    for element in extensions:
+        extensions_count += element[1]
+    extension_names = [x[0] for x in extensions]
+    extension_names.append("Other")
+    extension_counts = [x[1] for x in extensions]
+    extension_counts.append(total - extensions_count) #number of "other" filetypes that are too few to have their own listing
+    
+    fig, ax = plt.subplots()
+    ax.pie(extension_counts, labels=extension_names)
+    ax.axis('equal')
+    buffer = BytesIO()
+    fig.savefig(buffer)
+    chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
+    return chart
+    #plt.savefig("x")
 
 def results(request):
     if request.method == 'POST':
@@ -71,6 +92,8 @@ def results(request):
             request.session['data_format'] = data_format
     #if GET
     else:
+        chart = get_plot()
+        return render(request, 'search/graphs.html', {'chart': chart })
         #get the form data from the session
         try:
             pattern = request.session['pattern']
@@ -92,6 +115,9 @@ def results(request):
     max_date = datetime.today() - timedelta(days=int(max_age))
     data = data.exclude(filelastmodificationdate__lt=max_date)
     table = FilesTable(data)    
+
+    
+
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
     return render(request, 'search/results.html', {'table': table })
 
@@ -102,25 +128,6 @@ def search(request):
         'form': form,
     }
 
-    #only file extensions occuring more often than 1% of all files are shown
-    total = Files.objects.count()
-    min_count =  total * 0.01
-    #group by file extension and count, exclude empty extension, take only
-    extensions = Files.objects.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c').exclude(fileextension="")
-    extensions_count = 0 #number of all files that are listed to calculate the "other" extensions pie size
-    for element in extensions:
-        extensions_count += element[1]
-    extension_names = [x[0] for x in extensions]
-    extension_names.append("Other")
-    extension_counts = [x[1] for x in extensions]
-    extension_counts.append(total - extensions_count) #number of "other" filetypes that are too few to have their own listing
-    
-    fig1, ax1 = plt.subplots()
-    ax1.pie(extension_counts, labels=extension_names)
-    ax1.axis('equal')
-    plt.savefig("x")
-    
-    return HttpResponse(extensions)
     return render(request, 'search/search.html', context)
     
 
