@@ -29,12 +29,12 @@ def get_chart():
 
 #how to do without pyplot because not recommended? https://matplotlib.org/stable/gallery/user_interfaces/web_application_server_sgskip.html#sphx-glr-gallery-user-interfaces-web-application-server-sgskip-py
 #doesnt group e.g. yml and yaml together, also is case sensitive
-def get_plot_extension_count(data):
+def get_plot_extension_count(query_res):
     #only file extensions occuring more often than 1% of all files are shown
-    total = Files.objects.count()
+    total = query_res.count()
     min_count =  total * 0.01
     #group by file extension and count, exclude empty extension, take only
-    extensions = Files.objects.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c').exclude(fileextension="")
+    extensions = query_res.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c').exclude(fileextension="")
     extensions_count = 0 #number of all files that are listed to calculate the "other" extensions pie size
     for element in extensions:
         extensions_count += element[1]
@@ -43,33 +43,33 @@ def get_plot_extension_count(data):
     extension_counts = [x[1] for x in extensions]
     extension_counts.append(total - extensions_count) #number of "other" filetypes that are too few to have their own listing
     
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(9.6, 7.2))
     ax.pie(extension_counts, labels=extension_names)
     ax.axis('equal')
     plt.title('File extension by number of files')
     return get_chart()  
 
 #doesnt group e.g. yml and yaml together, also is case sensitive
-def get_plot_extension_size(data):
-    data = Files.objects.values_list('fileextension').annotate(size=Sum('filesize')).order_by('-size')
-    amount_to_plot = 25
-    other_size = 0
-    for element in data[amount_to_plot:]:
-        other_size += element[1]    
-    data = data[:amount_to_plot]
-    extensions = [x[0] for x in data]
-    sizes = [x[1] for x in data]
-    extensions.append("Other")
-    sizes.append(other_size)
+def get_plot_extension_size(query_res):
+    data = query_res.values_list('fileextension').annotate(size=Sum('filesize')).order_by('-size')
+    amount_to_plot = 19 #0-index    
+    extensions = [x[0] for x in data[:amount_to_plot]]
+    sizes = [x[1] for x in data[:amount_to_plot]]
+    if len(data) > amount_to_plot + 1:
+        other_size = 0
+        for element in data[amount_to_plot:]:
+            other_size += element[1]
+        extensions.append("Other")
+        sizes.append(other_size)
 
-    fig, ax = plt.subplots(figsize=(12.8, 9.6))
+    fig, ax = plt.subplots(figsize=(9.6, 7.2))
     ax.pie(sizes, labels=extensions)
     ax.axis('equal')
     plt.title('File extension by total size')
     return get_chart()  
 
-def get_plot_size(data):
-    data = Files.objects.values_list('filesize')
+def get_plot_size(query_res):
+    data = query_res.values_list('filesize')
     sizes = [x[0] for x in data]
     fig, ax = plt.subplots()
 
@@ -84,24 +84,29 @@ def get_plot_size(data):
     return get_chart()
 
 #plot showing number of files for each year over the past 5 years
-def get_plot_time(data):
+def get_plot_time(query_res):
     #add a bar for "other"
+    years_shown = 5
     year = datetime.now().year
-    data = Files.objects.filter(filelastmodificationdate__gte=year - 5)
+    data = query_res.filter(filelastmodificationdate__gte=year - years_shown)
+    #other = query_res.filter(filelastmodificationdate__lt=year - years_shown).count()
     x = list()
     y = list()
-    for i in range(5):
+    #do this with a proper query instead?
+    for i in range(years_shown):
         x.append(year)
         y.append(data.filter(filelastmodificationdate__gte=year, filelastmodificationdate__lt=year + 1).count())
         year -= 1
-
+    
+    # x.append(2010)
+    # y.append(other)
     fig, ax = plt.subplots()
     ax.bar(x, y)
     plt.title('Number of files modified per year')
     return get_chart()
 
-def get_plot_owner(data):
-    data = Files.objects.values_list('fileowner').annotate(c=Count('fileowner'))
+def get_plot_owner(query_res):
+    data = query_res.values_list('fileowner').annotate(c=Count('fileowner'))
     fig, ax = plt.subplots()
     x = [x[0] for x in data]
     y = [x[1] for x in data]
@@ -174,7 +179,7 @@ def results(request):
     data = data.exclude(filelastmodificationdate__lt=max_date)
     table = FilesTable(data) 
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
-    #return HttpResponse(get_plot_extension_size(data))
+    #return HttpResponse(get_plot_time(data))
     context = {
         'table': table,
         'chart_extension_count': get_plot_extension_count(data),
