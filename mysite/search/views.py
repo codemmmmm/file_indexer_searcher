@@ -4,9 +4,12 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView
 from django.core import serializers
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django_tables2.config import RequestConfig
 from datetime import datetime, timedelta
+import numpy as np
+import matplotlib
+matplotlib.use('AGG')
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
@@ -15,18 +18,18 @@ from .models import Files
 from .forms import SearchForm
 from .tables import FilesTable
 
-# def get_chart():
-#     buffer = BytesIO()
-#     plt.savefig(buffer, format='png')
-#     buffer.seek(0)
-#     image = buffer.getvalue()
-#     chart = base64.b64encode(image)
-#     chart = chart.decode('utf-8')
-#     buffer.close()
-#     return chart
+def get_chart():
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    chart = base64.b64encode(buffer.getvalue())
+    chart = chart.decode('utf-8')
+    buffer.close()
+    return chart
 
-#how to do without pyplot?
-def get_plot():
+#how to do without pyplot because not recommended? https://matplotlib.org/stable/gallery/user_interfaces/web_application_server_sgskip.html#sphx-glr-gallery-user-interfaces-web-application-server-sgskip-py
+#doesnt group e.g. yml and yaml together, also is case sensitive
+def get_plot_extension_count(data):
     #only file extensions occuring more often than 1% of all files are shown
     total = Files.objects.count()
     min_count =  total * 0.01
@@ -43,11 +46,68 @@ def get_plot():
     fig, ax = plt.subplots()
     ax.pie(extension_counts, labels=extension_names)
     ax.axis('equal')
-    buffer = BytesIO()
-    fig.savefig(buffer)
-    chart = base64.b64encode(buffer.getvalue()).decode('utf-8')
-    return chart
-    #plt.savefig("x")
+    plt.title('File extension by number of files')
+    return get_chart()  
+
+#doesnt group e.g. yml and yaml together, also is case sensitive
+def get_plot_extension_size(data):
+    data = Files.objects.values_list('fileextension').annotate(size=Sum('filesize')).order_by('-size')
+    amount_to_plot = 25
+    other_size = 0
+    for element in data[amount_to_plot:]:
+        other_size += element[1]    
+    data = data[:amount_to_plot]
+    extensions = [x[0] for x in data]
+    sizes = [x[1] for x in data]
+    extensions.append("Other")
+    sizes.append(other_size)
+
+    fig, ax = plt.subplots(figsize=(12.8, 9.6))
+    ax.pie(sizes, labels=extensions)
+    ax.axis('equal')
+    plt.title('File extension by total size')
+    return get_chart()  
+
+def get_plot_size(data):
+    data = Files.objects.values_list('filesize')
+    sizes = [x[0] for x in data]
+    fig, ax = plt.subplots()
+
+    #freedman-diaconis rule
+    #q25, q75 = np.percentile(sizes,[.25,.75])
+    #bin_width = 2*(q75 - q25)*len(sizes)**(-1/3)
+    #bins = round((sizes.max() - sizes.min())/bin_width)
+
+    ax.hist(sizes, bins=20, density=True) #, log=True
+    plt.xlabel('File size')
+    plt.title('File size distribution')
+    return get_chart()
+
+#plot showing number of files for each year over the past 5 years
+def get_plot_time(data):
+    #add a bar for "other"
+    year = datetime.now().year
+    data = Files.objects.filter(filelastmodificationdate__gte=year - 5)
+    x = list()
+    y = list()
+    for i in range(5):
+        x.append(year)
+        y.append(data.filter(filelastmodificationdate__gte=year, filelastmodificationdate__lt=year + 1).count())
+        year -= 1
+
+    fig, ax = plt.subplots()
+    ax.bar(x, y)
+    plt.title('Number of files modified per year')
+    return get_chart()
+
+def get_plot_owner(data):
+    data = Files.objects.values_list('fileowner').annotate(c=Count('fileowner'))
+    fig, ax = plt.subplots()
+    x = [x[0] for x in data]
+    y = [x[1] for x in data]
+    ax.bar(x, y) #log=True
+    plt.title('Number of files by owner')
+    return get_chart()
 
 def results(request):
     if request.method == 'POST':
@@ -112,12 +172,18 @@ def results(request):
     data = data.exclude(filelastmodificationdate__gt=min_date)
     max_date = datetime.today() - timedelta(days=int(max_age))
     data = data.exclude(filelastmodificationdate__lt=max_date)
-    table = FilesTable(data)    
-
-    
-
+    table = FilesTable(data) 
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
-    return render(request, 'search/results.html', {'table': table, 'chart': get_plot() })
+    #return HttpResponse(get_plot_extension_size(data))
+    context = {
+        'table': table,
+        'chart_extension_count': get_plot_extension_count(data),
+        'chart_size': get_plot_size(data),
+        'chart_time': get_plot_time(data),
+        'chart_owner': get_plot_owner(data),
+        'chart_extension_size': get_plot_extension_size(data),
+    }
+    return render(request, 'search/results.html', context)
 
 def search(request):
     form = SearchForm()
