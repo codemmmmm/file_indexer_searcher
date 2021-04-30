@@ -88,14 +88,13 @@ def get_plot_time(query_res):
     #add a bar for "other"
     years_shown = 5
     year = datetime.now().year
-    data = query_res.filter(filelastmodificationdate__gte=year - years_shown)
     #other = query_res.filter(filelastmodificationdate__lt=year - years_shown).count()
     x = list()
     y = list()
     #do this with a proper query instead?
     for i in range(years_shown):
         x.append(year)
-        y.append(data.filter(filelastmodificationdate__gte=year, filelastmodificationdate__lt=year + 1).count())
+        y.append(query_res.filter(filelastmodificationdate__gte=year, filelastmodificationdate__lt=year + 1).count())
         year -= 1
     
     # x.append(2010)
