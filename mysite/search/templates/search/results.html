@@ -28,7 +28,11 @@
                 align-items: center;
                 -webkit-justify-content: center;
                 justify-content: center;
-                    }
+                }
+
+            #table th, td, tr, a {
+                font-size: 16px;
+            }
 
             /* .chart_extension_size:hover  + .chart_extension_size {
                 display: block;
@@ -97,18 +101,6 @@
                 <img class="minimized chart_extension_size" src="data:image/png;base64, {{chart_extension_size|safe}}" alt="Distribution of file size"/>
                 <img class="maximized chart_extension_size" src="data:image/png;base64, {{chart_extension_size|safe}}" alt="Distribution of file size"/>
             </div>
-            
-            <!-- <img class="minimized chart_size" src="data:image/png;base64, {{chart_size|safe}}" alt="Distribution of file size"/>
-            <img class="minimized chart_time" src="data:image/png;base64, {{chart_time|safe}}" alt="Distribution of file size"/>
-            <img class="minimized chart_owner" src="data:image/png;base64, {{chart_owner|safe}}" alt="Distribution of file size"/>
-            <img class="minimized chart_extension_count" src="data:image/png;base64, {{chart_extension_count|safe}}" alt="Distribution of file types (file extensions)"/>
-            <img class="minimized chart_extension_size" src="data:image/png;base64, {{chart_extension_size|safe}}" alt="Distribution of file size"/>
-            
-            <img class="maximized chart_size" src="data:image/png;base64, {{chart_size|safe}}" alt="Distribution of file size"/>
-            <img class="maximized chart_time" src="data:image/png;base64, {{chart_time|safe}}" alt="Distribution of file size"/>
-            <img class="maximized chart_owner" src="data:image/png;base64, {{chart_owner|safe}}" alt="Distribution of file size"/>
-            <img class="maximized chart_extension_count" src="data:image/png;base64, {{chart_extension_count|safe}}" alt="Distribution of file types (file extensions)"/>
-            <img class="maximized chart_extension_size" src="data:image/png;base64, {{chart_extension_size|safe}}" alt="Distribution of file size"/> -->
         </div>
         <div id="results">
             {% render_table table %}
