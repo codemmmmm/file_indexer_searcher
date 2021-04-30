@@ -7,28 +7,24 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
         <style>
             .minimized {
-                width: auto; 
-                height: 10vh;
+                width: 20%; 
+                height: auto;
                 float: left;
                 }
 
             .maximized {
                 position: absolute;
+                top: 50vh;
+                width: 100vw;
                 height: auto;
                 display: none;
-                top: 11vh;
-                left: 25vw;
-                width: 50vw;
+                z-index: -1;
                 }
 
-            .center {
-                display: -webkit-flex;
-                display: flex;
-                -webkit-align-items: center;
-                align-items: center;
-                -webkit-justify-content: center;
-                justify-content: center;
-                    }
+            #placeholder {
+                display: block;
+                top: 50vh;
+            }
 
             /* .chart_extension_size:hover  + .chart_extension_size {
                 display: block;
@@ -75,8 +71,11 @@
             }         
         </style>
     </head>
-    <body>        
-        <div id="charts" class="center">
+    <body>
+        <div id="results">
+            {% render_table table %}
+        </div>
+        <div id="charts">
             <div>
                 <img class="minimized chart_size" src="data:image/png;base64, {{chart_size|safe}}" alt="Distribution of file size"/>
                 <img id="placeholder" class="maximized chart_size" src="data:image/png;base64, {{chart_size|safe}}" alt="Distribution of file size"/>
@@ -109,9 +108,6 @@
             <img class="maximized chart_owner" src="data:image/png;base64, {{chart_owner|safe}}" alt="Distribution of file size"/>
             <img class="maximized chart_extension_count" src="data:image/png;base64, {{chart_extension_count|safe}}" alt="Distribution of file types (file extensions)"/>
             <img class="maximized chart_extension_size" src="data:image/png;base64, {{chart_extension_size|safe}}" alt="Distribution of file size"/> -->
-        </div>
-        <div id="results">
-            {% render_table table %}
         </div>
     </body>
 </html>

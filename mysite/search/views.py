@@ -29,12 +29,14 @@ def get_chart():
 
 #how to do without pyplot because not recommended? https://matplotlib.org/stable/gallery/user_interfaces/web_application_server_sgskip.html#sphx-glr-gallery-user-interfaces-web-application-server-sgskip-py
 #doesnt group e.g. yml and yaml together, also is case sensitive
+#only count where extension isn't null (directories)?
 def get_plot_extension_count(query_res):
     #only file extensions occuring more often than 1% of all files are shown
     total = query_res.count()
     min_count =  total * 0.01
     #group by file extension and count, exclude empty extension, take only
-    extensions = query_res.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c').exclude(fileextension="")
+    extensions = query_res.values_list('fileextension').annotate(c=Count('fileextension')).filter(c__gte=min_count).order_by('c')
+    #return total
     extensions_count = 0 #number of all files that are listed to calculate the "other" extensions pie size
     for element in extensions:
         extensions_count += element[1]
@@ -71,7 +73,7 @@ def get_plot_extension_size(query_res):
 def get_plot_size(query_res):
     data = query_res.values_list('filesize')
     sizes = [x[0] for x in data]
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(9.6, 7.2))
 
     #freedman-diaconis rule
     #q25, q75 = np.percentile(sizes,[.25,.75])
@@ -98,14 +100,14 @@ def get_plot_time(query_res):
     
     x.append("Other")
     y.append(other)
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(9.6, 7.2))
     ax.bar(x, y)
     plt.title('Number of files modified per year')
     return get_chart()
 
 def get_plot_owner(query_res):
     data = query_res.values_list('fileowner').annotate(c=Count('fileowner'))
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(9.6, 7.2))
     x = [x[0] for x in data]
     y = [x[1] for x in data]
     ax.bar(x, y) #log=True
@@ -177,7 +179,8 @@ def results(request):
     data = data.exclude(filelastmodificationdate__lt=max_date)
     table = FilesTable(data) 
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
-    #return HttpResponse(get_plot_time(data))
+    #return HttpResponse(get_plot_extension_count(data))
+    data = data.exclude(filetype__contains='dir')
     context = {
         'table': table,
         'chart_extension_count': get_plot_extension_count(data),
