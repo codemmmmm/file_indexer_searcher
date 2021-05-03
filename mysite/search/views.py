@@ -7,12 +7,12 @@ from django.core import serializers
 from django.db.models import Count, Sum
 from django_tables2.config import RequestConfig
 from datetime import datetime, timedelta
-import numpy as np
 import matplotlib
 matplotlib.use('AGG')
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+import numpy as np
 
 from .models import Files
 from .forms import SearchForm
@@ -29,7 +29,7 @@ def get_chart():
 
 #how to do without pyplot because not recommended? https://matplotlib.org/stable/gallery/user_interfaces/web_application_server_sgskip.html#sphx-glr-gallery-user-interfaces-web-application-server-sgskip-py
 #doesnt group e.g. yml and yaml together, also is case sensitive
-def get_plot_extension_count(query_res):
+def get_plot_extension_count(query_res, size):
     #only file extensions occuring more often than 1% of all files are shown
     total = query_res.count()
     min_count =  total * 0.01
@@ -45,15 +45,16 @@ def get_plot_extension_count(query_res):
     if total > extensions_count:
         extension_names.append("Other")
         extension_counts.append(total - extensions_count) #number of "other" filetypes that are too few to have their own listing
-    
-    fig, ax = plt.subplots(figsize=(12.8, 9.6))
-    ax.pie(extension_counts, labels=extension_names)
+    fig, ax = plt.subplots(figsize=size)
+    cmap = plt.cm.get_cmap('Blues', len(extension_counts))
+    ax.pie(extension_counts, labels=extension_names, colors=cmap(np.linspace(0.1, 1, len(extension_counts))))
     ax.axis('equal')
+    
     plt.title('File extensions by number of files')
     return get_chart()  
 
 #doesnt group e.g. yml and yaml together, also is case sensitive
-def get_plot_extension_size(query_res):
+def get_plot_extension_size(query_res, size):
     data = query_res.values_list('fileextension').annotate(size=Sum('filesize')).order_by('-size')
     amount_to_plot = 19 #0-index    
     extensions = [x[0] for x in data[:amount_to_plot]]
@@ -65,16 +66,17 @@ def get_plot_extension_size(query_res):
         extensions.append("Other")
         sizes.append(other_size)
 
-    fig, ax = plt.subplots(figsize=(12.8, 9.6))
-    ax.pie(sizes, labels=extensions)
+    fig, ax = plt.subplots(figsize=size)
+    cmap = plt.cm.get_cmap('Blues', len(sizes))
+    ax.pie(sizes, labels=extensions, colors=cmap(np.linspace(0.1, 1, len(sizes))))
     ax.axis('equal')
     plt.title('File extensions by file size')
     return get_chart()  
 
-def get_plot_size(query_res):
+def get_plot_size(query_res, size):
     data = query_res.values_list('filesize')
     sizes = [x[0] for x in data]
-    fig, ax = plt.subplots(figsize=(12.8, 9.6))
+    fig, ax = plt.subplots(figsize=size)
 
     #freedman-diaconis rule
     #q25, q75 = np.percentile(sizes,[.25,.75])
@@ -87,7 +89,7 @@ def get_plot_size(query_res):
     return get_chart()
 
 #plot showing number of files for each year over the past 5 years
-def get_plot_time(query_res):
+def get_plot_time(query_res, size):
     years_shown = 5
     year = datetime.now().year
     other = query_res.filter(filelastmodificationdate__lt=year - years_shown).count()
@@ -101,18 +103,23 @@ def get_plot_time(query_res):
     
     x.append("Other")
     y.append(other)
-    fig, ax = plt.subplots(figsize=(12.8, 9.6))
+    fig, ax = plt.subplots(figsize=size)
     ax.bar(x, y)
     plt.title('Number of files modified per year')
+    plt.xlabel('Year')
+    plt.ylabel('Number of files')
+    plt.gca().invert_xaxis()
     return get_chart()
 
-def get_plot_owner(query_res):
+def get_plot_owner(query_res, size):
     data = query_res.values_list('fileowner').annotate(c=Count('fileowner'))
-    fig, ax = plt.subplots(figsize=(12.8, 9.6))
+    fig, ax = plt.subplots(figsize=size)
     x = [x[0] for x in data]
     y = [x[1] for x in data]
     ax.bar(x, y) #log=True
     plt.title('Number of files by owner')
+    plt.xlabel('User ID')
+    plt.ylabel('Number of files')    
     return get_chart()
 
 def results(request):
@@ -181,14 +188,15 @@ def results(request):
     table = FilesTable(data) 
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
     data = data.exclude(filetype__contains='dir')
-    #return HttpResponse()
+    chart_size = (12.8, 9.6)
+    #return HttpResponse(get_plot_extension_count(data, chart_size))
     context = {
         'table': table,
-        'chart_extension_count': get_plot_extension_count(data),
-        'chart_size': get_plot_size(data),
-        'chart_time': get_plot_time(data),
-        'chart_owner': get_plot_owner(data),
-        'chart_extension_size': get_plot_extension_size(data),
+        'chart_extension_count': get_plot_extension_count(data, chart_size),
+        'chart_size': get_plot_size(data, chart_size),
+        'chart_time': get_plot_time(data, chart_size),
+        'chart_owner': get_plot_owner(data, chart_size),
+        'chart_extension_size': get_plot_extension_size(data, chart_size),
     }
     return render(request, 'search/results.html', context)
 
