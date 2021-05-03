@@ -47,7 +47,7 @@ def get_plot_extension_count(query_res, size):
         extension_counts.append(total - extensions_count) #number of "other" filetypes that are too few to have their own listing
     fig, ax = plt.subplots(figsize=size)
     cmap = plt.cm.get_cmap('Blues', len(extension_counts))
-    ax.pie(extension_counts, labels=extension_names, colors=cmap(np.linspace(0.1, 1, len(extension_counts))))
+    ax.pie(extension_counts, labels=extension_names, colors=cmap(np.linspace(0.0, 1, len(extension_counts))))
     ax.axis('equal')
     
     plt.title('File extensions by number of files')
@@ -68,7 +68,7 @@ def get_plot_extension_size(query_res, size):
 
     fig, ax = plt.subplots(figsize=size)
     cmap = plt.cm.get_cmap('Blues', len(sizes))
-    ax.pie(sizes, labels=extensions, colors=cmap(np.linspace(0.1, 1, len(sizes))))
+    ax.pie(sizes, labels=extensions, colors=cmap(np.linspace(0.0, 1, len(sizes))))
     ax.axis('equal')
     plt.title('File extensions by file size')
     return get_chart()  
@@ -189,7 +189,7 @@ def results(request):
     RequestConfig(request, paginate={'per_page': 25}).configure(table)
     data = data.exclude(filetype__contains='dir')
     chart_size = (12.8, 9.6)
-    #return HttpResponse(get_plot_extension_count(data, chart_size))
+    #return HttpResponse(get_plot_extension_size(data, chart_size))
     context = {
         'table': table,
         'chart_extension_count': get_plot_extension_count(data, chart_size),
