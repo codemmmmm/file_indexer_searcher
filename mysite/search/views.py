@@ -63,8 +63,8 @@ def get_plot_extension_size(query_res, size):
         other_size = 0
         for element in data[amount_to_plot:]:
             other_size += element[1]
-        extensions.append("Other")
-        sizes.append(other_size)
+        extensions.insert(0, "Other")
+        sizes.insert(0, other_size)
 
     fig, ax = plt.subplots(figsize=size)
     cmap = plt.cm.get_cmap('Blues', len(sizes))
