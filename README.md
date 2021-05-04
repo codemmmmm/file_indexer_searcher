@@ -82,6 +82,10 @@ It prints:
 
 ## Usage
 
+You can search the database either with a command line tool or with a GUI in your browser.
+
+### Native installation
+
 Run `file_search pattern` to search.
 
 The pattern is matched with the SQLite [LIKE](https://sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators) operator, it can include "%" (any sequence of zero or more characters) and "\_" (any single character). It will automatically match as "%pattern%".
@@ -100,6 +104,15 @@ Optional arguments:
 * --case
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable case sensitive pattern matching
+
+### Web-GUI in a container
+
+Run `sudo docker run -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui). 
+
+Visit [localhost:8000/search](http://127.0.0.1:8000/search) to access the GUI. It runs as a Django development server.
+
+- how is the pattern matched
+- what parameters can be sorted, mention copy path to clipboard
 
 ## TODO
 
