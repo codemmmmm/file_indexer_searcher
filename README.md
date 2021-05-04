@@ -47,7 +47,7 @@ As a service:
 
 ### Installation as docker container
 
-Run `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target=" host",readonly indexer` to start the indexing.
+Run `docker run -v /etc/localtime:/etc/localtime:ro --mount source=files-db,target="/etc/files-index" --mount type=bind,source="/",target="/host",readonly indexer` to start the indexing.
 
 As a service:
 
