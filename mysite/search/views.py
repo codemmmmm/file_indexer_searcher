@@ -153,8 +153,6 @@ def results(request):
                 max_age = int(form.cleaned_data['max_age'])
             else:
                 max_age = 200000 
-
-            data_format = form.cleaned_data['data_format']
             
             request.session['pattern'] = pattern
             request.session['min_size'] = min_size
@@ -162,7 +160,6 @@ def results(request):
             request.session['case_sensitive'] = case_sensitive
             request.session['min_age'] = min_age
             request.session['max_age'] = max_age
-            request.session['data_format'] = data_format
     #if GET
     else:
         #get the form data from the session
@@ -173,12 +170,8 @@ def results(request):
             case_sensitive = request.session['case_sensitive']
             min_age = request.session['min_age']
             max_age = request.session['max_age']
-            data_format = request.session['data_format']
         except KeyError:
             return HttpResponse('Please enable cookies.')
-
-    #if data_format == 'json':
-    #    json = serializers.serialize('json', Files.objects.all())
 
     data = Files.objects.filter(filefullpath__icontains=pattern, filesize__gte=min_size, filesize__lte=max_size)
     min_date = datetime.today() - timedelta(days=min_age)
