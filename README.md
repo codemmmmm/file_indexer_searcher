@@ -54,21 +54,6 @@ As a service:
 * Copy the mindex.service and mindex.timer to `/etc/systemd/system`.
 * Enable (and start) the service and timer. By default it will run 15 minutes after systemd start and every 12 hours after that.
 
-## TODO
-
-* General optimizations and bug fixes
-* Change the try for UnicodeEncodeError so that it doesn't just skip the entry (it currently is a workaround because it threw errors at multiple places)
-* Make is_hidden() work for directories like /home/moritz/.mozilla
-* Why are all entries counted as symlinks
-* Make excluding /... directories optional
-* Make exckuding hidden directories optional
-* File extension field for directories should be null
-* Get input from user to decide which directory to scan (in run command?)
-* Check .is_dir() less often
-* Maybe use os.walk() instead of own function
-* Make it work for windows
-* Where to save config files? https://unix.stackexchange.com/questions/68721/where-should-user-configuration-files-go
-
 # File searcher
 
 Shows all files or directories that fit the name pattern from the database.
@@ -114,7 +99,24 @@ Visit [localhost:8000/search](http://127.0.0.1:8000/search) to access the GUI. I
 - how is the pattern matched
 - what parameters can be sorted, mention copy path to clipboard
 
-## TODO
+# TODO
+
+## File indexer
+
+* General optimizations and bug fixes
+* Change the try for UnicodeEncodeError so that it doesn't just skip the entry (it currently is a workaround because it threw errors at multiple places)
+* Make is_hidden() work for directories like /home/moritz/.mozilla
+* Why are all entries counted as symlinks
+* Make excluding /... directories optional
+* Make exckuding hidden directories optional
+* File extension field for directories should be null
+* Get input from user to decide which directory to scan (in run command?)
+* Check .is_dir() less often
+* Maybe use os.walk() instead of own function
+* Make it work for windows
+* Where to save config files? https://unix.stackexchange.com/questions/68721/where-should-user-configuration-files-go
+
+## File searcher 
 
 * add more search options
   * match exact pattern without %
