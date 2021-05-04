@@ -96,6 +96,8 @@ Run `sudo docker run -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/l
 
 Visit [localhost:8000/search](http://127.0.0.1:8000/search) to access the GUI. It runs as a Django development server.
 
+- run with -d ?
+- how to shut down the container
 - replace target with database path (link within the README?)
 - how is the pattern matched
 - what parameters can be sorted, mention copy path to clipboard
