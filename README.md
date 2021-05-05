@@ -144,6 +144,7 @@ After clicking the search button:
 
 * caching for images
 * form should give option to exclude displaying directories
+* replace "" with "no extension" in pie charts
 * pattern matching can take % or _ as LIKE
 * table to get the user name for every user id
 * calendar plot/heatmap (make sure to print the number per day because the coloring can go wrong)
