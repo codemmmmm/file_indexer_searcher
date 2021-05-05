@@ -126,3 +126,14 @@ Visit [localhost:8000/search](http://127.0.0.1:8000/search) in your browser to a
 * maybe: users can only see their own entries (uid)
 * GUI
 * analyzing: what file types (extension) take up how much space, recommend to remove old files
+
+## GUI
+
+* caching for images
+* form should give option to exclude displaying directories
+* pattern matching can take % or _ as LIKE
+* table to get the user name for every user id
+* calendar plot/heatmap (make sure to print the number per day because the coloring can go wrong)
+* sort pie charts again after adding "other"
+* docs: describe where and how to e.g. add more plots etc
+* IF NO FILE MATCHED THE PATTERN, PLOTS THROW ERROR?
