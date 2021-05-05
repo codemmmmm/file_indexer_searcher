@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView
 from django.core import serializers
+#from django.utils.cache import patch_cache_control
 from django.db.models import Count, Sum
 from django_tables2.config import RequestConfig
 from datetime import datetime, timedelta
@@ -13,6 +14,7 @@ import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 import numpy as np
+import hashlib
 
 from .models import Files
 from .forms import SearchForm
@@ -122,6 +124,13 @@ def get_plot_owner(query_res, size):
     plt.ylabel('Number of files')    
     return get_chart()
 
+def get_hash(query_strings):
+    #argument is a tuple
+    string = ""
+    for s in query_strings:
+        string += s
+    return hashlib.md5(string.encode()).hexdigest()
+
 def results(request):
     if request.method == 'POST':
         # Create a form instance and populate it with data from the request (binding):
@@ -191,7 +200,10 @@ def results(request):
         'chart_owner': get_plot_owner(data, chart_size),
         'chart_extension_size': get_plot_extension_size(data, chart_size),
     }
-    return render(request, 'search/results.html', context)
+    # response = render(request, 'search/results.html', context)
+    # patch_cache_control(response, private=True, max_age=43200)
+    # return response
+    return render(request, 'search/results.html', context)   
 
 def search(request):
     form = SearchForm()
