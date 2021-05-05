@@ -92,7 +92,7 @@ Optional arguments:
 
 ### Web-GUI in a container
 
-Run `sudo docker run -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui). 
+Run `docker run -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui). 
 
 Visit [localhost:8000/search](http://127.0.0.1:8000/search) to access the GUI. It runs as a Django development server.
 
