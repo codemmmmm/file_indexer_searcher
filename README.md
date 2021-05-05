@@ -92,13 +92,14 @@ Optional arguments:
 
 ### Web-GUI in a container
 
-Run `docker run -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui). 
+Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui). 
+
+Replace the path in source="" with the directory **containing** your database. The path is saved in the config file `/var/lib/file_index_search/config.yaml` created during the [installation](#installation).
 
 Visit [localhost:8000/search](http://127.0.0.1:8000/search) in your browser to access the GUI. It runs as a Django development server.
 
-- run with -d ?
-- how to shut down the container
-- replace target with database path (link within the README?)
+To shut down the server run `docker stop container_ID` where container_ID is the string printed after using the `docker run` command. You can also get the container_ID by running `docker container ls`.
+
 - how is the pattern matched
 - what parameters can be sorted, mention copy path to clipboard
 
