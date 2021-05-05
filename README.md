@@ -137,3 +137,4 @@ Visit [localhost:8000/search](http://127.0.0.1:8000/search) in your browser to a
 * sort pie charts again after adding "other"
 * docs: describe where and how to e.g. add more plots etc
 * IF NO FILE MATCHED THE PATTERN, PLOTS THROW ERROR?
+  * also error if pattern is only whitespace
