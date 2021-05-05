@@ -108,7 +108,12 @@ After clicking the search button:
 
 * Click on the table head fields (except "File type") to sort the table. You can only sort by one field at a time.
 * Click on a "File path" field to copy the path to the clipboard.
-* Hover over the charts at the top to expand them in size.
+* Hover over the charts at the top to expand them in size:
+  * Chart showing the distribution of the system's files regarding their size.
+  * Chart showing how many files have their last modification date in which year.
+  * Chart showing which linux user ID owns how many files.
+  * Chart showing the distribution of the file types (file extension) regarding the number of files.
+  * Chart showing the distribution of the file types (file extension) regarding the size of files.
 
 # TODO
 
