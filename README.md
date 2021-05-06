@@ -69,9 +69,34 @@ It prints:
 
 You can search the database either with a command line tool or with a GUI in your browser.
 
+### Web-GUI in a container
+
+Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/gui_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui).
+
+Replace the path in source="" with the **directory** path containing your database. The path is saved in the config file `/var/lib/file_index_search/config.yaml` created during the [installation](#installation).
+
+Visit [localhost:8000/search](http://127.0.0.1:8000/search) in your browser to access the GUI. It runs as a Django development server.
+
+To shut down the server run `docker stop container_ID` where container_ID is the string printed after using the `docker run` command. You can also get the container_ID by running `docker container ls`.
+
+#### GUI
+
+The pattern is matched with the SQLite [LIKE](https://sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators) operator as "%pattern%". Case sensitive search currently is not possible.
+
+After clicking the search button:
+
+* Click on the table head fields (except "File type") to sort the table. You can only sort by one field at a time.
+* Click on a "File path" field to copy the path to the clipboard.
+* Hover over the charts at the top to expand them in size:
+  * Chart showing the distribution of the system's files regarding their size (logarithmic axes).
+  * Chart showing how many files have their last modification date in which year.
+  * Chart showing which linux user ID owns how many files.
+  * Chart showing the distribution of the file types (file extension) regarding the number of files.
+  * Chart showing the distribution of the file types (file extension) regarding the size of files.
+
 ### Native installation
 
-Run `file_search pattern` to search.
+Run `file_search pattern` to search, replacing the pattern with a full file path or part of it.
 
 The pattern is matched with the SQLite [LIKE](https://sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators) operator, it can include "%" (any sequence of zero or more characters) and "\_" (any single character). It will automatically match as "%pattern%".
 
@@ -89,18 +114,6 @@ Optional arguments:
 * --case
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable case sensitive pattern matching
-
-### Web-GUI in a container
-
-Run `docker run -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui). 
-
-Visit [localhost:8000/search](http://127.0.0.1:8000/search) to access the GUI. It runs as a Django development server.
-
-- run with -d ?
-- how to shut down the container
-- replace target with database path (link within the README?)
-- how is the pattern matched
-- what parameters can be sorted, mention copy path to clipboard
 
 # TODO
 
@@ -126,3 +139,18 @@ Visit [localhost:8000/search](http://127.0.0.1:8000/search) to access the GUI. I
 * maybe: users can only see their own entries (uid)
 * GUI
 * analyzing: what file types (extension) take up how much space, recommend to remove old files
+
+## GUI
+
+* fix bug of histogram y-axis on smaller queries?
+* caching for images
+* form should give option to exclude displaying directories
+* replace "" with "no extension" in pie charts
+* pattern matching can take % or _ as LIKE
+* table to get the user name for every user id
+* calendar plot/heatmap (make sure to print the number per day because the coloring can go wrong)
+* sort pie charts again after adding "other"
+* docs: describe where and how to e.g. add more plots etc
+* IF NO FILE MATCHED THE PATTERN, PLOTS THROW ERROR?
+  * also error if pattern is only whitespace
+* make case sensitive search possible
