@@ -1,5 +1,10 @@
 # File indexer and searcher
 
+<p float="left">
+  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png" width="400" />
+  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png" width="400" /> 
+</p>
+
 ## Installation
 
 * Download and change to the directory.
