@@ -69,27 +69,6 @@ It prints:
 
 You can search the database either with a command line tool or with a GUI in your browser.
 
-### Native installation
-
-Run `file_search pattern` to search, replacing the pattern with a full file path or part of it.
-
-The pattern is matched with the SQLite [LIKE](https://sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators) operator, it can include "%" (any sequence of zero or more characters) and "\_" (any single character). It will automatically match as "%pattern%".
-
-Optional arguments:
-
-* -h, --help
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print the help message
-* --minSize
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filter by minimum file size (in bytes), inclusive comparison
-* --maxSize
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filter by maximum file size (in bytes), inclusive comparison
-* --case
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable case sensitive pattern matching
-
 ### Web-GUI in a container
 
 Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui).
@@ -114,6 +93,27 @@ After clicking the search button:
   * Chart showing which linux user ID owns how many files.
   * Chart showing the distribution of the file types (file extension) regarding the number of files.
   * Chart showing the distribution of the file types (file extension) regarding the size of files.
+
+### Native installation
+
+Run `file_search pattern` to search, replacing the pattern with a full file path or part of it.
+
+The pattern is matched with the SQLite [LIKE](https://sqlite.org/lang_expr.html#the_like_glob_regexp_and_match_operators) operator, it can include "%" (any sequence of zero or more characters) and "\_" (any single character). It will automatically match as "%pattern%".
+
+Optional arguments:
+
+* -h, --help
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print the help message
+* --minSize
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filter by minimum file size (in bytes), inclusive comparison
+* --maxSize
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filter by maximum file size (in bytes), inclusive comparison
+* --case
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable case sensitive pattern matching
 
 # TODO
 
