@@ -1,12 +1,8 @@
 # File indexer and searcher
 
-&nbsp;             |  &nbsp;
-:-------------------------:|:-------------------------:
-![](https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png)  |  ![](https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png)
-
 <p float="left">
-  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png" width="300" />
-  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png" width="300" /> 
+  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png" width="450" />
+  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png" width="450" /> 
 </p>
 
 ## Installation
@@ -79,8 +75,6 @@ It prints:
 You can search the database either with a command line tool or with a GUI in your browser.
 
 ### Web-GUI in a container
-
-![Screenshot of the file search web-GUI](https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png)
 
 Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/gui_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui).
 
