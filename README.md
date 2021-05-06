@@ -142,6 +142,7 @@ Optional arguments:
 
 ## GUI
 
+* fix bug of histogram y-axis on smaller queries?
 * caching for images
 * form should give option to exclude displaying directories
 * replace "" with "no extension" in pie charts
