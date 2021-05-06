@@ -144,7 +144,7 @@ Optional arguments:
 
 ## GUI
 
-* fix bug of histogram y-axis on smaller queries?
+* fix bug of histogram y-axis on smaller queries /home/moritz/VDR (is it a matplotlib bug?)
 * caching for images
 * form should give option to exclude displaying directories
 * replace "" with "no extension" in pie charts
