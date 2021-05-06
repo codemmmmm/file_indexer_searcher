@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import matplotlib
 matplotlib.use('AGG')
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 import base64
 from io import BytesIO
 import numpy as np
@@ -19,6 +20,9 @@ import hashlib
 from .models import Files
 from .forms import SearchForm
 from .tables import FilesTable
+
+def y_fmt_thousand(x, y):
+    return '%1.0fk' % (x / 1000)
 
 def get_chart():
     buffer = BytesIO()
@@ -95,8 +99,8 @@ def get_plot_time(query_res, size):
     years_shown = 5
     year = datetime.now().year
     other = query_res.filter(filelastmodificationdate__lt=year - years_shown).count()
-    x = list()
-    y = list()
+    x = list() #years
+    y = list() #count
     #do this with a proper query instead?
     for i in range(years_shown):
         x.append(str(year))
@@ -111,6 +115,9 @@ def get_plot_time(query_res, size):
     plt.xlabel('Year')
     plt.ylabel('Number of files')
     plt.gca().invert_xaxis()
+    if max(y) > 10000:
+        formatter = FuncFormatter(y_fmt_thousand)
+        ax.yaxis.set_major_formatter(formatter)
     return get_chart()
 
 def get_plot_owner(query_res, size):
@@ -121,7 +128,10 @@ def get_plot_owner(query_res, size):
     ax.bar(x, y) #log=True
     plt.title('Number of files by owner')
     plt.xlabel('User ID')
-    plt.ylabel('Number of files')    
+    plt.ylabel('Number of files') 
+    if max(y) > 10000:
+        formatter = FuncFormatter(y_fmt_thousand)
+        ax.yaxis.set_major_formatter(formatter)  
     return get_chart()
 
 def get_hash(query_strings):
