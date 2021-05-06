@@ -71,7 +71,7 @@ You can search the database either with a command line tool or with a GUI in you
 
 ### Web-GUI in a container
 
-Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/mysite_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui).
+Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/gui_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui).
 
 Replace the path in source="" with the **directory** path containing your database. The path is saved in the config file `/var/lib/file_index_search/config.yaml` created during the [installation](#installation).
 
