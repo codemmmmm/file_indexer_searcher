@@ -71,6 +71,8 @@ You can search the database either with a command line tool or with a GUI in you
 
 ### Web-GUI in a container
 
+![Screenshot of the file search web-GUI](https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png)
+
 Run `docker run -d -p 127.0.0.1:8000:8000/tcp --mount type=bind,source="/var/lib/docker/volumes/files-db/_data",target="/gui_container/data" mmdockermmmm/file_search_gui` to use my [dockerhub image](https://hub.docker.com/repository/docker/mmdockermmmm/file_search_gui).
 
 Replace the path in source="" with the **directory** path containing your database. The path is saved in the config file `/var/lib/file_index_search/config.yaml` created during the [installation](#installation).
@@ -142,7 +144,7 @@ Optional arguments:
 
 ## GUI
 
-* fix bug of histogram y-axis on smaller queries?
+* fix bug of histogram y-axis on smaller queries /home/moritz/VDR (is it a matplotlib bug?)
 * caching for images
 * form should give option to exclude displaying directories
 * replace "" with "no extension" in pie charts
