@@ -1,9 +1,13 @@
 # File indexer and searcher
 
+&nbsp;             |  &nbsp;
+:-------------------------:|:-------------------------:
+![](https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png)  |  ![](https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png)
 
-  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png" width="700" />
-  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png" width="700" /> 
-
+<p float="left">
+  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search.png" width="300" />
+  <img src="https://github.com/codemmmmm/file_indexer_searcher/blob/main/docs/images/screenshot_file_search2.png" width="300" /> 
+</p>
 
 ## Installation
 
