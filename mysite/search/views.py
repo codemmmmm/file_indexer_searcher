@@ -21,7 +21,24 @@ from .models import Files
 from .forms import SearchForm
 from .tables import FilesTable
 
-def y_fmt_thousand(x, y):
+#https://stackoverflow.com/a/1094933/15707077
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
+
+def file_size_fmt(x, pos):
+    return sizeof_fmt(x)
+
+def y_fmt_hist(x, pos):
+    if x <= 10000:
+        return '%.0i' % (x)
+    else:
+        return '%0.0e' % (x)
+
+def fmt_thousand(x, pos):
     return '%1.0fk' % (x / 1000)
 
 def get_chart():
@@ -89,9 +106,14 @@ def get_plot_size(query_res, size):
     #bin_width = 2*(q75 - q25)*len(sizes)**(-1/3)
     #bins = round((sizes.max() - sizes.min())/bin_width)
 
-    ax.hist(sizes, bins=20, density=True) #, log=True
+    ax.hist(sizes, bins=20, log=True)
     plt.xlabel('File size')
+    plt.ylabel('Number of files')
     plt.title('File size distribution')
+    y_formatter = FuncFormatter(y_fmt_hist)
+    ax.yaxis.set_major_formatter(y_formatter)
+    x_formatter = FuncFormatter(file_size_fmt)
+    ax.xaxis.set_major_formatter(x_formatter)
     return get_chart()
 
 #plot showing number of files for each year over the past 5 years
@@ -116,7 +138,7 @@ def get_plot_time(query_res, size):
     plt.ylabel('Number of files')
     plt.gca().invert_xaxis()
     if max(y) > 10000:
-        formatter = FuncFormatter(y_fmt_thousand)
+        formatter = FuncFormatter(fmt_thousand)
         ax.yaxis.set_major_formatter(formatter)
     return get_chart()
 
@@ -130,7 +152,7 @@ def get_plot_owner(query_res, size):
     plt.xlabel('User ID')
     plt.ylabel('Number of files') 
     if max(y) > 10000:
-        formatter = FuncFormatter(y_fmt_thousand)
+        formatter = FuncFormatter(fmt_thousand)
         ax.yaxis.set_major_formatter(formatter)  
     return get_chart()
 
